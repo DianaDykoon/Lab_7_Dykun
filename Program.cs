@@ -293,5 +293,87 @@ namespace Lab_7
             }
         }
 
+        // Метод збереження списку об'єктів у файл *csv
+        static void SaveToFileCSV(List<Account> accounts, string path)
+        {
+            List<string> lines = new();
+            foreach (var item in accounts)
+            {
+                lines.Add(item.ToString());
+            }
+            try
+            {
+                File.WriteAllLines(path, lines);
+                Console.WriteLine($"Об'єкти збережно у: {Path.GetFullPath(path)}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        // Метод зчитування списку з файлу *csv
+        static List<Account> ReadFromFileCSV(string path)
+        {
+            List<Account> accounts = new();
+            try
+            {
+                List<string> lines = new();
+                lines = File.ReadAllLines(path).ToList();
+
+                Console.WriteLine("\nВмiст файлу CSV:\n");
+                foreach (var item in lines)
+                {
+                    Console.WriteLine(item);
+                    bool result = Account.TryParse(item, out Account? account);
+                    if (result)
+                        accounts.Add(account);
+                }
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine($"Помилка при читаннi з CSV файлу: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return accounts;
+        }
+
+        // Метод збереження списку об'єктів у файл *json
+        static void SaveToFileJson(List<Account> accounts, string path)
+        {
+            try
+            {
+                string jsonstring = "";
+                jsonstring = JsonSerializer.Serialize(accounts);
+                File.WriteAllText(path, jsonstring);
+                Console.WriteLine($"Об'єкти збережено у: {Path.GetFullPath(path)}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        // Метод зчитування списку з файлу *json
+        static List<Account>? ReadFromFileJson(string path)
+        {
+            List<Account>? accounts = null;
+            try
+            {
+                accounts = JsonSerializer.Deserialize<List<Account>>(File.ReadAllText(path));
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine($"Помилка при читаннi з JSON файлу: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return accounts;
+        }
     }
 }
