@@ -20,9 +20,10 @@ namespace Lab_7
             {
                 Console.WriteLine(" 1 - Додати об'єкт\n 2 - Вивести об'єкти на екран\n" +
                     " 3 - Знайти об'єкт\n 4 - Видалити об'єкт\n 5 - Демонстрацiя поведiнки об'єктiв\n" +
-                    " 6 – Демонстрацiя роботи static методiв\n " +
+                    " 6 – Демонстрацiя роботи static методiв\n 7 – Зберегти колекцiю об’єктiв у файл" +
+                    "\n 8 - Зчитати колекцiю об’єктiв з файлу \n 9 - Очистити колекцiю об’єктiв\n" +
                     " 0 - Вийти з програми");
-                Console.Write("Виберiть пункт меню (0 - 6) --->");
+                Console.Write("Виберiть пункт меню (0 - 9) --->");
                 int menu = int.Parse(Console.ReadLine());
 
                 switch (menu)
@@ -138,6 +139,49 @@ namespace Lab_7
                             Console.WriteLine($"\nМожна оформити кредит на суму: {amount}, з доходом {income} та вiком {age}");
                         else
                             Console.WriteLine($"\nНеможливо оформити кредит на суму: {amount}, з доходом {income} та вiком {age}!");
+                        break;
+
+                    case 7:
+                        Console.WriteLine("Оберiть формат файла, в який ви хочете зберегти колекцiю об'єктiв");
+                        Console.WriteLine(" 1 - Зберегти у файл *.csv\n 2 - Зберегти у файл *.json");
+                        int fileTypeToSave = int.Parse(Console.ReadLine());
+
+                        switch (fileTypeToSave)
+                        {
+                            case 1:
+                                SaveToFileCSV(accounts, "accounts.csv");
+                                break;
+
+                            case 2:
+                                SaveToFileJson(accounts, "accounts.json");
+                                break;
+                        }
+                        break;
+
+                    case 8:
+                        Console.WriteLine("Оберiть формат файла, з якого ви хочете зчитати колекцiю об'єктiв");
+                        Console.WriteLine(" 1 - Зчитати з файлу *.csv\n 2 - Зчитати з файл *.json");
+                        int fileTypeToRead = int.Parse(Console.ReadLine());
+
+                        switch (fileTypeToRead)
+                        {
+                            case 1:
+                                List<Account> accountsFromCSV = ReadFromFileCSV("accounts.csv");
+                                foreach (Account account in accountsFromCSV)
+                                    accounts.Add(account);
+                                break;
+
+                            case 2:
+                                List<Account>? accountsFromJson = ReadFromFileJson("accounts.json");
+                                foreach (Account account in accountsFromJson!)
+                                    accounts.Add(account);
+                                break;
+                        }
+                        break;
+
+                    case 9:
+                        accounts.Clear();
+                        Console.WriteLine("\nКолекiя очищена!\n");
                         break;
 
                     default:
