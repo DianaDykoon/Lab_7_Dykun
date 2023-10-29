@@ -1,4 +1,4 @@
-﻿
+﻿using System.Text.Json.Serialization;
 
 namespace Lab_7
 {
@@ -30,6 +30,7 @@ namespace Lab_7
             }
         }
 
+        [JsonPropertyName("Account state")]
         public AccountState State
         {
             get { return _state; }
@@ -60,6 +61,7 @@ namespace Lab_7
             }
         }
 
+        [JsonPropertyName("Account Number")]
         public int AccountNumber
         {
             get { return _accountNumber; }
@@ -97,12 +99,15 @@ namespace Lab_7
         }
 
         // Автовластивість, яка показує кількість транзакцій на рахунку
+        [JsonIgnore]
         public int TransactionCount { get; set; } = 0;
 
         // Автовластивість, яка показує процентну ставку рахунку
+        [JsonIgnore]
         public double InterestRate { get; private set; } = 10;
 
         // Обчислювальна властивість, розрахунок доступного залишку на рахунку
+        [JsonIgnore]
         public double AvailableBalance
         {
             get { return _balance + _overdraft; }
@@ -181,7 +186,7 @@ namespace Lab_7
             if (string.IsNullOrEmpty(s))
                 throw new ArgumentNullException("Рядок не може бути порожнiм");
 
-            string[] parts = s.Split(';');
+            string[] parts = s.Split(',');
 
             if (parts.Length != 6)
                 throw new ArgumentException("Невiрний формат рядка!");
@@ -219,11 +224,8 @@ namespace Lab_7
         // Метод формування рядка з описом об'єкта
         public override string ToString()
         {
-            return $"Рахунок зi станом: {_state};\n iм'я користувача: {_name}; адреса: {_address}; " +
-                   $"номер рахунку: {_accountNumber}; баланс: {_balance:F1}; " +
-                   $"овердрафт: {_overdraft}; " +
-                   $"\nдоступний залишок: {AvailableBalance:F1}; " + $"процентна ставка: {InterestRate} %; " +
-                   $"кiлькiсть транзакцiй: {TransactionCount}";
+            return $"{_state},{_name},{_address},{_accountNumber},{_balance:F0}," +
+                   $"{_overdraft}";
         }
     }
 }
