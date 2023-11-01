@@ -1,6 +1,6 @@
 # Лабораторна робота №7
-Лабораторна робота з дисципліни "ООП"
-## На тему
+**З дисципліни:** "ООП"
+**На тему:**
 Saving and loading of objects.
 Serialization/ Deserialization
 
